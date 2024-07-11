@@ -24,7 +24,7 @@ class Hotel:
             return False
 
 
-class SpaPackage(Hotel):
+class SpaHotel(Hotel):
     def generate_spa_ticket(self, customer):
         content = f"""
             Thank you for your SPA reservation!
@@ -74,7 +74,7 @@ class SecurityCreditCard(CreditCard):
 print(df)
 name = input("Enter your name...")
 hotel_ID = input("Enter the hotel ID:")
-hotel = SpaPackage(hotel_ID)
+hotel = SpaHotel(hotel_ID)
 if hotel.available():
     card_no = input("Enter the card number:")
     card_expiry = input("Enter the card expiry date:")
