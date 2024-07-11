@@ -1,5 +1,8 @@
 import pandas
 
+df = pandas.read_csv('hotels.csv', dtype={"id": str})
+df_cards = pandas.read_csv('cards.csv', dtype=str).to_dict(orient="records")
+
 
 class Hotel:
     def __init__(self, hotel_id):
@@ -35,12 +38,34 @@ class ReservationTicket:
         return content
 
 
-df = pandas.read_csv('hotels.csv', dtype={"id": str})
+class CreditCard:
+    def __init__(self, number):
+        self.number = number
+
+    def validate(self,expiration, cvc, holder):
+        card_dict = {"number": self.number, "expiration": expiration, "cvc": cvc, "holder": holder}
+        if card_dict in df_cards:
+            return True
+        else:
+            return False
+
+
 print(df)
 hotel_ID = input("Enter the hotel ID:")
 hotel = Hotel(hotel_ID)
 if hotel.available():
-    hotel.book_hotel()
-    name = input("Enter your name...")
-    reserve_ticket = ReservationTicket(name, hotel)
-    print(reserve_ticket.generate_ticket())
+    card_no = input("Enter the card number:")
+    card_expiry = input("Enter the card expiry date:")
+    card_cvc = input("Enter the card CVC:")
+    card_holder = input("Enter the card holder name:")
+    credit_card = CreditCard(card_no)
+    card_validity = credit_card.validate(card_expiry, card_cvc, card_holder)
+    if card_validity:
+        hotel.book_hotel()
+        name = input("Enter your name...")
+        reserve_ticket = ReservationTicket(name, hotel)
+        print(reserve_ticket.generate_ticket())
+    else:
+        print("Card is not valid....")
+else:
+    print("The hotel is not available for booking...")
